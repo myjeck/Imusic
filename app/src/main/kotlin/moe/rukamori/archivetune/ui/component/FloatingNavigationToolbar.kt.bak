@@ -12,7 +12,6 @@ package moe.rukamori.archivetune.ui.component
 import android.os.SystemClock
 import android.view.ViewConfiguration
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -34,6 +33,7 @@ import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.ShortNavigationBar
 import androidx.compose.material3.ShortNavigationBarArrangement
 import androidx.compose.material3.ShortNavigationBarItem
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,15 +41,10 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
-import dev.chrisbanes.haze.hazeEffect
 import moe.rukamori.archivetune.constants.NavigationBarHeight
 import moe.rukamori.archivetune.constants.NavigationBarMaxWidth
 import moe.rukamori.archivetune.ui.screens.Screens
@@ -63,7 +58,6 @@ fun FloatingNavigationToolbar(
     pureBlack: Boolean,
     modifier: Modifier = Modifier,
     isPairedWithMiniPlayer: Boolean = false,
-    hazeState: HazeState? = null,
     isSelected: (Screens) -> Boolean,
     onItemClick: (Screens, Boolean) -> Unit,
     onSearchItemDoubleClick: (() -> Unit)? = null,
@@ -81,9 +75,9 @@ fun FloatingNavigationToolbar(
                 null
             }
         } ?: MaterialTheme.shapes.extraLarge
+    val navigationContainerColor =
+        if (pureBlack) Color.Black else MaterialTheme.colorScheme.surfaceContainer
     val motionScheme = MaterialTheme.motionScheme
-    val contentColor = if (pureBlack) Color.White else Color.White
-
     Box(
         modifier =
             modifier
@@ -91,38 +85,21 @@ fun FloatingNavigationToolbar(
                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)),
         contentAlignment = Alignment.Center,
     ) {
-        Box(
+        Surface(
             modifier =
                 Modifier
                     .widthIn(max = NavigationBarMaxWidth)
                     .fillMaxWidth()
-                    .height(NavigationBarHeight)
-                    .clip(navigationShape)
-                    .then(
-                        if (hazeState != null) {
-                            Modifier.hazeEffect(
-                                state = hazeState,
-                                style =
-                                    HazeStyle(
-                                        backgroundColor = MaterialTheme.colorScheme.surface,
-                                        tint = HazeTint(Color.White.copy(alpha = 0.16f)),
-                                        blurRadius = 26.dp,
-                                        noiseFactor = 0f,
-                                    ),
-                            )
-                        } else {
-                            Modifier
-                        },
-                    ).border(
-                        width = 1.dp,
-                        color = Color.White.copy(alpha = 0.24f),
-                        shape = navigationShape,
-                    ),
+                    .height(NavigationBarHeight),
+            shape = navigationShape,
+            color = navigationContainerColor,
+            tonalElevation = NavigationBarDefaults.Elevation,
+            shadowElevation = NavigationBarDefaults.Elevation,
         ) {
             ShortNavigationBar(
                 modifier = Modifier.fillMaxSize(),
                 containerColor = Color.Transparent,
-                contentColor = contentColor,
+                contentColor = if (pureBlack) Color.White else MaterialTheme.colorScheme.onSurface,
                 windowInsets = WindowInsets(0, 0, 0, 0),
                 arrangement = ShortNavigationBarArrangement.EqualWeight,
             ) {
@@ -141,7 +118,6 @@ fun FloatingNavigationToolbar(
                     ) {
                         items.forEach { screen ->
                             val selected = isSelected(screen)
-
                             val onDoubleClick =
                                 remember(screen, onSearchItemDoubleClick) {
                                     if (screen == Screens.Search) onSearchItemDoubleClick else null

@@ -93,6 +93,8 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Scaffold
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.haze
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -1642,6 +1644,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 }
+                            val hazeState = remember { HazeState() }
                             }
 
                             Scaffold(
@@ -2108,6 +2111,7 @@ class MainActivity : ComponentActivity() {
                                             navController = navController,
                                             pureBlack = pureBlack,
                                             isMiniPlayerPairedWithNavigation = areBottomBarsPaired,
+                                            hazeState = hazeState,
                                         )
 
                                         if (useRail) return@Box
@@ -2151,6 +2155,7 @@ class MainActivity : ComponentActivity() {
                                                 items = navigationItems,
                                                 pureBlack = pureBlack,
                                                 isPairedWithMiniPlayer = areBottomBarsPaired,
+                                                hazeState = hazeState,
                                                 modifier =
                                                     Modifier
                                                         .align(Alignment.BottomCenter)
@@ -2398,6 +2403,7 @@ class MainActivity : ComponentActivity() {
                                                 // so routing them through this shared arm is harmless.
                                                 topAppBarScrollBehavior.nestedScrollConnection,
                                             ),
+                                            .haze(state = hazeState),
                                 ) {
                                     navigationBuilder(
                                         navController,

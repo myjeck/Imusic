@@ -268,6 +268,9 @@ dependencies {
     implementation(libs.datastore)
     implementation(libs.work.runtime)
     implementation("androidx.browser:browser:1.10.0")
+implementation("dev.chrisbanes.haze:haze:1.6.10")
+    implementation("dev.chrisbanes.haze:haze-materials:1.6.10")
+
 
     implementation(libs.compose.runtime)
     implementation(libs.compose.foundation)

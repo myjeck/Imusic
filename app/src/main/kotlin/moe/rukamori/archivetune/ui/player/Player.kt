@@ -8,6 +8,7 @@
 @file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
 
 package moe.rukamori.archivetune.ui.player
+import dev.chrisbanes.haze.HazeState
 
 import android.content.Context
 import android.content.res.Configuration
@@ -311,6 +312,7 @@ fun BottomSheetPlayer(
     modifier: Modifier = Modifier,
     pureBlack: Boolean,
     isMiniPlayerPairedWithNavigation: Boolean = false,
+    hazeState: HazeState? = null,
 ) {
     val context = LocalContext.current
     val menuState = LocalMenuState.current
@@ -1090,6 +1092,7 @@ fun BottomSheetPlayer(
                 duration = duration,
                 pureBlack = pureBlack,
                 isPairedWithNavigation = isMiniPlayerPairedWithNavigation,
+                hazeState = hazeState,
             )
         },
     ) {
