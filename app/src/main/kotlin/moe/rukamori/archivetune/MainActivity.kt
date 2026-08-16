@@ -94,7 +94,7 @@ import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.RichTooltip
 import androidx.compose.material3.Scaffold
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.haze
+import dev.chrisbanes.haze.hazeSource
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -1645,7 +1645,6 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             val hazeState = remember { HazeState() }
-                            }
 
                             Scaffold(
                                 topBar = {
@@ -2111,7 +2110,7 @@ class MainActivity : ComponentActivity() {
                                             navController = navController,
                                             pureBlack = pureBlack,
                                             isMiniPlayerPairedWithNavigation = areBottomBarsPaired,
-                                            hazeState = hazeState,
+                                            hazeState =   hazeState,
                                         )
 
                                         if (useRail) return@Box
@@ -2402,8 +2401,7 @@ class MainActivity : ComponentActivity() {
                                                 // and OnlineSearchResult is gated by canScroll=false,
                                                 // so routing them through this shared arm is harmless.
                                                 topAppBarScrollBehavior.nestedScrollConnection,
-                                            ),
-                                            .haze(state = hazeState),
+                                            ).hazeSource(state = hazeState),
                                 ) {
                                     navigationBuilder(
                                         navController,
@@ -2503,6 +2501,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
     }
 
     private fun isBackupUri(uri: Uri?): Boolean {
